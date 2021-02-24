@@ -24,7 +24,7 @@
       <input type="submit" value="Search" />
     </form>
 
-    <div class="movie-list">
+    <!-- <div class="movie-list">
       <div class="movie" v-for="movie in movies" :key="movie.id">
         <router-link :to="'/movie/' + movie.id" class="movie-link">
           <div class="movie-poster">
@@ -42,6 +42,20 @@
           </div>
         </router-link>
       </div>
+    </div> -->
+    <div class="movie-list">
+      <Card
+        v-for="movie in movies"
+        :key="movie.id"
+        :title="movie?.title || movie?.name"
+        :releaseYear="
+          movie?.release_date?.split('-')[0] ||
+            movie?.first_air_date?.split('-')[0]
+        "
+        :posterPath="movie.poster_path"
+        alt="Poster"
+        :mediaType="movie.media_type"
+      />
     </div>
   </div>
 </template>
@@ -50,7 +64,10 @@
 import { ref } from "vue";
 import { searchTMDB } from "../lib/tmdb";
 
+import Card from "../components/Card";
+
 export default {
+  components: { Card },
   setup() {
     const search = ref("");
     const movies = ref([]);
