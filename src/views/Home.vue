@@ -1,51 +1,14 @@
 <template>
   <div class="home">
-    <div class="movie-card">
-      <router-link to="/movie/74387">
-        <img
-          src="https://image.tmdb.org/t/p/original/zT6tXWsJoBOWJT1PeUEKLTFOoHh.jpg"
-          alt="Movie poster"
-          class="poster-img"
-        />
-        <div class="details">
-          <h3>Final Space</h3>
-          <p>
-            An astronaut named Gary and his planet-destroying sidekick Mooncake
-            embark on serialized journeys through space in order to unlock the
-            mystery of “Final Space,” the last point in the universe, if it
-            actually does exist.
-          </p>
-        </div>
-      </router-link>
-    </div>
-
     <form @submit.prevent="searchMovies" class="search-box">
       <input type="text" placeholder="Search here..." v-model="search" />
       <input type="submit" value="Search" />
     </form>
 
-    <!-- <div class="movie-list">
-      <div class="movie" v-for="movie in movies" :key="movie.id">
-        <router-link :to="'/movie/' + movie.id" class="movie-link">
-          <div class="movie-poster">
-            <img :src="movie.poster_path" alt="Movie poster" />
-            <div class="movie-type">{{ movie.media_type }}</div>
-          </div>
-          <div class="details">
-            <p class="year">
-              {{
-                movie?.release_date?.split("-")[0] ||
-                  movie?.first_air_date?.split("-")[0]
-              }}
-            </p>
-            <h3>{{ movie?.title || movie?.name }}</h3>
-          </div>
-        </router-link>
-      </div>
-    </div> -->
     <div class="movie-list">
       <Card
         v-for="movie in movies"
+        @click="toggleModal"
         :key="movie.id"
         :title="movie?.title || movie?.name"
         :releaseYear="
@@ -53,10 +16,14 @@
             movie?.first_air_date?.split('-')[0]
         "
         :posterPath="movie.poster_path"
-        alt="Poster"
+        :alt="Poster"
         :mediaType="movie.media_type"
+        :rating="movie.vote_average"
+        :ratingCount="movie.vote_count"
       />
     </div>
+
+    <Modal v-show="showModal" @close-modal="toggleModal" />
   </div>
 </template>
 
@@ -65,12 +32,14 @@ import { ref } from "vue";
 import { searchTMDB } from "../lib/tmdb";
 
 import Card from "../components/Card";
+import Modal from "../components/Modal";
 
 export default {
-  components: { Card },
+  components: { Card, Modal },
   setup() {
     const search = ref("");
     const movies = ref([]);
+    const showModal = ref(false);
 
     const searchMovies = async () => {
       if (search.value.length) {
@@ -81,10 +50,14 @@ export default {
       }
     };
 
+    const toggleModal = () => (showModal.value = !showModal.value);
+
     return {
       search,
       movies,
       searchMovies,
+      toggleModal,
+      showModal,
     };
   },
 };
@@ -127,7 +100,6 @@ export default {
 
   .search-box {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 1rem;
@@ -145,8 +117,7 @@ export default {
         background-color: #496583;
         font-size: 1.3rem;
         padding: 0.8rem 1rem;
-        border-radius: 0.5rem;
-        margin-bottom: 1rem;
+        border-radius: 0.5rem 0 0 0.5rem;
         transition: 0.4s;
 
         &::placeholder {
@@ -162,11 +133,12 @@ export default {
         width: 100%;
         max-width: 300px;
         background-color: #42b883;
-        padding: 1rem;
-        border-radius: 0.5rem;
+        padding: 0.8rem 1rem;
+        border-radius: 0 0.5rem 0.5rem 0;
         color: white;
         font-size: 1.3rem;
         text-transform: uppercase;
+        letter-spacing: 0.1rem;
         transition: 0.4s;
 
         &:active {

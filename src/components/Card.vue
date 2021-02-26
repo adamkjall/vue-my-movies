@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="cursor-pointer">
     <div class="relative">
       <img :src="posterPath" :alt="alt" />
       <div
@@ -11,14 +11,24 @@
         {{ releaseYear }}
       </div>
     </div>
-    <div class="">
+    <div class="flex justify-between text-white p-2">
       <!-- <h3>{{ title }}</h3> -->
+      <div>{{ rating }}</div>
+      <div>{{ ratingCount }}</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["posterPath", "mediaType", "releaseYear", "title", "alt"],
+  props: [
+    "posterPath",
+    "mediaType",
+    "releaseYear",
+    "title",
+    "alt",
+    "rating",
+    "ratingCount",
+  ],
 };
 </script>
