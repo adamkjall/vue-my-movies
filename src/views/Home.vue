@@ -102,7 +102,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
+    padding: 1rem 2rem;
 
     input {
       display: block;
@@ -115,7 +115,6 @@ export default {
         width: 100%;
         color: white;
         background-color: #496583;
-        font-size: 1.3rem;
         padding: 0.8rem 1rem;
         border-radius: 0.5rem 0 0 0.5rem;
         transition: 0.4s;
@@ -136,7 +135,6 @@ export default {
         padding: 0.8rem 1rem;
         border-radius: 0 0.5rem 0.5rem 0;
         color: white;
-        font-size: 1.3rem;
         text-transform: uppercase;
         letter-spacing: 0.1rem;
         transition: 0.4s;
