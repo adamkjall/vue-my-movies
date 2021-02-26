@@ -152,6 +152,7 @@ export default {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 320px));
     gap: 1rem;
+    justify-content: center;
 
     .movie {
       border-radius: 0.3rem;
