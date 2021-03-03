@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onUpdated, ref } from "vue";
 import { searchTMDB } from "../lib/tmdb";
 
 import Card from "../components/Card";
@@ -36,7 +36,7 @@ import Modal from "../components/Modal";
 
 export default {
   components: { Card, Modal },
-  setup() {
+  setup(props, context) {
     const search = ref("");
     const movies = ref([]);
     const showModal = ref(false);
@@ -65,39 +65,6 @@ export default {
 
 <style lang="scss">
 .home {
-  .movie-card {
-    position: relative;
-
-    .poster-img {
-      display: block;
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-
-      position: relative;
-      z-index: 0;
-    }
-
-    .details {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 1rem;
-      z-index: 1;
-
-      h3 {
-        color: white;
-        margin-bottom: 1rem;
-      }
-
-      p {
-        color: white;
-      }
-    }
-  }
-
   .search-box {
     display: flex;
     justify-content: center;
@@ -151,56 +118,6 @@ export default {
     grid-template-columns: repeat(auto-fit, minmax(150px, 320px));
     gap: 1rem;
     justify-content: center;
-
-    .movie {
-      border-radius: 0.3rem;
-      overflow: hidden;
-
-      .movie-link {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-
-        .movie-poster {
-          position: relative;
-          display: block;
-
-          img {
-            display: block;
-            width: 100%;
-            object-fit: cover;
-          }
-
-          .movie-type {
-            position: absolute;
-            padding: 0.5rem 1rem;
-            background-color: #42b883;
-            color: white;
-            bottom: 1rem;
-            left: 0;
-            text-transform: capitalize;
-          }
-        }
-
-        .details {
-          background-color: #496583;
-          padding: 1rem 0.5rem;
-          flex: 1 1 100%;
-
-          .year {
-            color: #aaa;
-            font-size: 0.8rem;
-          }
-
-          h3 {
-            color: white;
-            font-weight: 600;
-            font-size: 1.2rem;
-            margin: 0.5rem 0;
-          }
-        }
-      }
-    }
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="cursor-pointer">
+  <div class="cursor-pointer rounded-md overflow-hidden">
     <div class="relative">
       <img :src="posterPath" :alt="alt" />
       <div
@@ -11,10 +11,10 @@
         {{ releaseYear }}
       </div>
     </div>
-    <div class="flex justify-between text-white p-2">
+    <div class="flex justify-between text-white p-4 bg-gray-900">
       <!-- <h3>{{ title }}</h3> -->
-      <div>{{ rating }}</div>
-      <div>{{ ratingCount }}</div>
+      <div>Rating: {{ rating }}</div>
+      <div>Votes: {{ ratingCount }}</div>
     </div>
   </div>
 </template>
