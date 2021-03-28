@@ -27,9 +27,12 @@
         :ratingCount="movie.vote_count"
       />
     </div>
-    <transition name="component-fade" mode="out-in">
-      <Router-view />
-    </transition>
+    <!-- Movie details route -->
+    <router-view v-slot="{ Component }">
+      <transition name="component-fade" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
   </div>
 </template>
 
@@ -39,10 +42,9 @@ import { useRouter } from "vue-router";
 import { searchTMDB, fetchTrendingMovies } from "../lib/tmdb";
 
 import Card from "../components/Card";
-import MovieDetails from "../components/MovieDetails";
 
 export default {
-  components: { Card, MovieDetails },
+  components: { Card },
   setup(props, context) {
     const search = ref("");
     const movies = ref([]);
@@ -141,7 +143,7 @@ export default {
   }
 }
 
-/* Modal transition */
+/* Movie details transition */
 .component-fade-enter-active,
 .component-fade-leave-active {
   transition: opacity 0.3s ease;
