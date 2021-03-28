@@ -1,7 +1,7 @@
 <template>
-  <div class="cursor-pointer rounded-md overflow-hidden">
+  <div class="card cursor-pointer rounded-md overflow-hidden" ref="card">
     <div class="relative">
-      <img :src="posterPath" :alt="alt" />
+      <img class="poster" :src="posterPath" :alt="alt" :style="height" />
       <div
         class="absolute bottom-0 right-0 bg-green-500 capitalize text-white p-2"
       >
@@ -30,5 +30,22 @@ export default {
     "rating",
     "ratingCount",
   ],
+  computed: {
+    height() {
+      // const cardRef= this.$refs;
+      // console.log(cardRef);
+    }
+  },
+  mounted() {
+    // console.log("mounted", this.$refs);
+  }
+  
 };
 </script>
+
+<style lang="scss" scoped>
+.card {
+  /* .poster {
+  } */
+}
+</style>

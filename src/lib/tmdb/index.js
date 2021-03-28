@@ -20,7 +20,7 @@ export const searchTMDB = async (query, page = 1) => {
   }
 };
 
-export const getTrendingMovies = async (page = 1) => {
+export const fetchTrendingMovies = async (page = 1) => {
   try {
     const res = await fetch(
       `${BASE_URL}/trending/movie/week?page=${page}&${DEFAULT_PARAMS}`
@@ -36,7 +36,7 @@ export const getTrendingMovies = async (page = 1) => {
   }
 };
 
-export const getMovieById = async (id) => {
+export const fetchMovieById = async (id) => {
   try {
     const res = await fetch(`${BASE_URL}/movie/${id}?${DEFAULT_PARAMS}`);
     const data = await res.json();

@@ -1,14 +1,19 @@
 <template>
   <div class="home">
     <form @submit.prevent="searchMovies" class="search-box">
-      <input type="text" placeholder="Search here..." v-model="search" />
+      <input
+        type="text"
+        placeholder="Search here..."
+        v-model="search"
+        autofocus
+      />
       <input type="submit" value="Search" />
     </form>
 
     <div class="movie-list">
       <Card
         v-for="movie in movies"
-        @click="toggleModal"
+        @click="toggleModal(movie.id)"
         :key="movie.id"
         :title="movie?.title || movie?.name"
         :releaseYear="
@@ -16,55 +21,76 @@
             movie?.first_air_date?.split('-')[0]
         "
         :posterPath="movie.poster_path"
-        :alt="Poster"
+        alt="Poster"
         :mediaType="movie.media_type"
         :rating="movie.vote_average"
         :ratingCount="movie.vote_count"
       />
     </div>
-
-    <Modal v-show="showModal" @close-modal="toggleModal" />
+  <transition name="component-fade" mode="out-in">
+   <Router-view />
+  </transition>
   </div>
 </template>
 
 <script>
 import { onUpdated, ref } from "vue";
-import { searchTMDB } from "../lib/tmdb";
+import { useRouter } from "vue-router";
+import { searchTMDB, fetchTrendingMovies } from "../lib/tmdb";
 
 import Card from "../components/Card";
 import Modal from "../components/Modal";
+import MovieDetails from "../components/MovieDetails";
 
 export default {
-  components: { Card, Modal },
+  components: { Card, Modal, MovieDetails },
   setup(props, context) {
     const search = ref("");
     const movies = ref([]);
-    const showModal = ref(false);
+    // const showModal = ref(false);
+
+    const router = useRouter();
+
+    const getTrendingMovies = async () => {
+      const res = await fetchTrendingMovies();
+      movies.value = res.results;
+    };
 
     const searchMovies = async () => {
       if (search.value.length) {
-        const data = await searchTMDB(search.value);
-        movies.value = data.results;
+        const res = await searchTMDB(search.value);
+        movies.value = res.results;
         search.value = "";
-        console.log(data);
       }
     };
 
-    const toggleModal = () => (showModal.value = !showModal.value);
+    const toggleModal = (id) => {
+      if (!id) router.push("/");
+      else {
+        router.push({ name: "movie", params: { id } });
+      }
+        // showModal.value = !showModal.value;
+    };
 
     return {
       search,
       movies,
+      getTrendingMovies,
       searchMovies,
       toggleModal,
-      showModal,
+      // showModal,
     };
+  },
+  mounted() {
+    this.getTrendingMovies();
   },
 };
 </script>
 
 <style lang="scss">
 .home {
+  position: relative;
+
   .search-box {
     display: flex;
     justify-content: center;
@@ -119,5 +145,15 @@ export default {
     gap: 1rem;
     justify-content: center;
   }
+}
+
+.component-fade-enter-active,
+.component-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.component-fade-enter-from,
+.component-fade-leave-to {
+  opacity: 0;
 }
 </style>
