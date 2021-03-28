@@ -13,7 +13,7 @@
     <div class="movie-list">
       <Card
         v-for="movie in movies"
-        @click="toggleModal(movie.id)"
+        @click.prevent="toggleModal(movie.id)"
         :key="movie.id"
         :title="movie?.title || movie?.name"
         :releaseYear="
@@ -146,11 +146,12 @@ export default {
 /* Movie details transition */
 .component-fade-enter-active,
 .component-fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: all 0.350s ease;
 }
 
 .component-fade-enter-from,
 .component-fade-leave-to {
+  transform: scale(0);
   opacity: 0;
 }
 </style>

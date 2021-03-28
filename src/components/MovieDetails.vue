@@ -23,6 +23,7 @@ export default {
 
     const getMovie = async () => {
       movie.value = await fetchMovieById(route.params.id);
+      console.log(movie.value.backdrop_path);
     };
 
     const close = () => {
@@ -32,12 +33,12 @@ export default {
     return { movie, getMovie, close };
   },
   mounted() {
-    console.log("Movie details mounted");
+    // console.log("Movie details mounted");
     this.getMovie();
     document.querySelector("body").style.overflow = "hidden";
   },
   unmounted() {
-    console.log("Movie details unmounted");
+    // console.log("Movie details unmounted");
     document.querySelector("body").style.overflow = "unset";
   },
 };
@@ -50,6 +51,8 @@ export default {
   width: 100%;
   height: 100vh;
   background-size: cover;
+  background-color: #111827;
+  color: white;
   border-radius: 8px;
   
 }
