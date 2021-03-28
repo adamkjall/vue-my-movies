@@ -27,27 +27,25 @@
         :ratingCount="movie.vote_count"
       />
     </div>
-  <transition name="component-fade" mode="out-in">
-   <Router-view />
-  </transition>
+    <transition name="component-fade" mode="out-in">
+      <Router-view />
+    </transition>
   </div>
 </template>
 
 <script>
-import { onUpdated, ref } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { searchTMDB, fetchTrendingMovies } from "../lib/tmdb";
 
 import Card from "../components/Card";
-import Modal from "../components/Modal";
 import MovieDetails from "../components/MovieDetails";
 
 export default {
-  components: { Card, Modal, MovieDetails },
+  components: { Card, MovieDetails },
   setup(props, context) {
     const search = ref("");
     const movies = ref([]);
-    // const showModal = ref(false);
 
     const router = useRouter();
 
@@ -66,10 +64,7 @@ export default {
 
     const toggleModal = (id) => {
       if (!id) router.push("/");
-      else {
-        router.push({ name: "movie", params: { id } });
-      }
-        // showModal.value = !showModal.value;
+      else router.push({ name: "movie", params: { id } });
     };
 
     return {
@@ -78,7 +73,6 @@ export default {
       getTrendingMovies,
       searchMovies,
       toggleModal,
-      // showModal,
     };
   },
   mounted() {
@@ -147,6 +141,7 @@ export default {
   }
 }
 
+/* Modal transition */
 .component-fade-enter-active,
 .component-fade-leave-active {
   transition: opacity 0.3s ease;
