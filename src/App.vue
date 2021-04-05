@@ -7,7 +7,19 @@
   <main>
     <router-view />
   </main>
+  <Sidebar />
 </template>
+
+<script>
+import Sidebar from "./components/Sidebar";
+
+export default {
+  components: { Sidebar },
+  setup(props, context) {
+    return {};
+  },
+};
+</script>
 
 <style lang="scss">
 * {
@@ -22,6 +34,7 @@
 }
 
 body {
+  position: relative;
   background-color: #35495e;
 }
 
@@ -33,7 +46,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 16px;
+  padding: .8rem 1rem;
   background-color: #2c3d4e;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
 

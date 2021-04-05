@@ -11,7 +11,24 @@
       <input class="rounded-r-md" type="submit" value="Search" />
     </form>
 
-    <div class="movie-list">
+    <div v-if="searchResult" class="movie-list">
+      <Card
+        v-for="movie in searchResult"
+        @click.prevent="toggleModal(movie.id)"
+        :key="movie.id"
+        :title="movie?.title || movie?.name"
+        :releaseYear="
+          movie?.release_date?.split('-')[0] ||
+            movie?.first_air_date?.split('-')[0]
+        "
+        :posterPath="movie.poster_path"
+        alt="Poster"
+        :mediaType="movie.media_type"
+        :rating="movie.vote_average"
+        :ratingCount="movie.vote_count"
+      />
+    </div>
+    <div v-else class="movie-list">
       <Card
         v-for="movie in movies"
         @click.prevent="toggleModal(movie.id)"
@@ -49,6 +66,7 @@ export default {
   setup(props, context) {
     const search = ref("");
     const movies = ref([]);
+    const searchResult = ref();
 
     const router = useRouter();
 
@@ -60,7 +78,7 @@ export default {
     const searchMovies = async () => {
       if (search.value.length) {
         const res = await searchTMDB(search.value);
-        movies.value = res.results;
+        searchResult.value = res.results;
         search.value = "";
       }
     };
@@ -75,6 +93,7 @@ export default {
       movies,
       getMovies,
       searchMovies,
+      searchResult,
       toggleModal,
     };
   },
@@ -146,7 +165,7 @@ export default {
 /* Movie details transition */
 .component-fade-enter-active,
 .component-fade-leave-active {
-  transition: all 0.350s ease;
+  transition: all 0.35s ease;
 }
 
 .component-fade-enter-from,

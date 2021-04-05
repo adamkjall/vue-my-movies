@@ -4,26 +4,47 @@
     :style="{ backgroundImage: `url(${movie.backdrop_path})` }"
   >
     <div class="overlay"></div>
-    <div class="close-btn" @click="close">CLOSE</div>
+    <fa-icon
+      class="close-btn"
+      :icon="['far', 'times-circle']"
+      size="2x"
+      @click.prevent="close"
+    ></fa-icon>
+
     <div class="details-wrapper">
       <div class="content">
-        <h1 class="title">{{ movie.title }}</h1>
-        <div class="release-date">Release date:{{ movie.release_date }}</div>
-        <div class="runtime">Runtime: {{ getRuntime(movie.runtime) }}</div>
-        <div class="genres">Genres: {{ genres }}</div>
-        <div class="tagline" v-if="movie.tagline">
-          Tagline: {{ movie.tagline }}
-        </div>
-        <a
-          class="imdb-link"
-          v-if="movie.imdb_id"
-          :href="`https://www.imdb.com/title/${movie.imdb_id}`"
-          target="_blank"
-        >
-          <img src="/img/imdb-logo.svg" alt="imdb logo" />
-        </a>
         <img class="poster" :src="movie.poster_path" alt="" />
-        <p>Overview: {{ movie.overview }}</p>
+        <div class="details">
+          <div class="details__header">
+            <h1 class="title">
+              {{ movie.title }}
+              <span class="release-date"
+                >({{ movie.release_date?.split("-")[0] }})</span
+              >
+            </h1>
+            <div class="vote">
+              {{ movie.vote_average }} <span>({{ movie.vote_count }})</span>
+            </div>
+          </div>
+          <div class="tagline" v-if="movie.tagline">
+            {{ movie.tagline }}
+          </div>
+          <div class="details__subheader">
+            <div class="runtime">{{ getRuntime(movie.runtime) }}</div>
+            <span>|</span>
+            <div class="genres">{{ genres }}</div>
+            <span>|</span>
+            <a
+              class="imdb-link"
+              v-if="movie.imdb_id"
+              :href="`https://www.imdb.com/title/${movie.imdb_id}`"
+              target="_blank"
+            >
+              <img src="/images/imdb-logo.svg" alt="imdb logo" />
+            </a>
+          </div>
+          <p class="overview">{{ movie.overview }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -93,8 +114,10 @@ export default {
 
   .close-btn {
     position: absolute;
-    top: 1.5rem;
+    bottom: 2.5rem;
     left: 1.5rem;
+    z-index: 5;
+    cursor: pointer;
   }
 
   .details-wrapper {
@@ -106,19 +129,70 @@ export default {
 
     .content {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      grid-auto-flow: column;
+      gap: 4rem;
 
       .poster {
-        width: 20rem;
+        max-width: 20rem;
+        /* float: left; */
       }
 
-      .imdb-link {
-        width: 3.5rem;
-        display: block;
-        img {
-          width: 100%;
-          height: auto;
+      .details {
+        &__header {
+          display: flex;
+          justify-content: space-between;
+
+          .title {
+            font-size: 3.5rem;
+
+            span {
+              font-size: 2.5rem;
+              filter: brightness(50%);
+            }
+          }
+
+          .vote {
+            font-size: 2.5rem;
+
+            span {
+              font-size: 2rem;
+              filter: brightness(50%);
+            }
+          }
+        }
+
+        .tagline {
+          font-size: 1.5rem;
+          font-style: italic;
+
+          &::before,
+          &::after {
+            content: '"';
+          }
+        }
+
+        &__subheader {
+          margin-top: 0.5rem;
+          display: flex;
+          color: gainsboro;
+
+          span {
+            margin: 0 0.75rem;
+          }
+
+          .imdb-link {
+            width: 3rem;
+            /* height: 100%; */
+            display: block;
+            img {
+              width: 100%;
+              height: auto;
+            }
+          }
+        }
+
+        .overview {
+          margin-top: 2rem;
         }
       }
     }

@@ -8,7 +8,7 @@
         :alt="alt"
         :onload="loading = false"
         oncomplete="alert('com')"
-        onerror="this.onerror=null;this.src='/img/default-poster.webp';"
+        onerror="this.onerror=null;this.src='/images/default-poster.webp';"
       />
       <div
         v-if="mediaType" class="absolute bottom-0 right-0 bg-green-500 capitalize text-white p-2"
