@@ -2,7 +2,7 @@ import { completeImgUrls } from "./helpers";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 export const BASE_IMG_URL = "https://image.tmdb.org/t/p/original";
-const DEFAULT_PARAMS = `api_key=${process.env.VUE_APP_TMDB_API_KEY}&language=en-US&include_adult=false`;
+const DEFAULT_PARAMS = `api_key=${process.env.VUE_APP_TMDB_API_KEY}&language=en-US&include_adult=false&vote_count.gte=20`;
 
 export const searchTMDB = async (query, page = 1) => {
   try {
@@ -20,10 +20,10 @@ export const searchTMDB = async (query, page = 1) => {
   }
 };
 
-export const fetchTrendingMovies = async (page = 1) => {
+export const fetchMovies = async (category = "popular", page = 1) => {
   try {
     const res = await fetch(
-      `${BASE_URL}/trending/movie/week?page=${page}&${DEFAULT_PARAMS}`
+      `${BASE_URL}/movie/${category}?page=${page}&${DEFAULT_PARAMS}`
     );
     const data = await res.json();
     if (data?.results) {

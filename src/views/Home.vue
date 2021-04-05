@@ -2,12 +2,13 @@
   <div class="home">
     <form @submit.prevent="searchMovies" class="search-box">
       <input
+        class="rounded-l-md"
         type="text"
         placeholder="Search here..."
         v-model="search"
         autofocus
       />
-      <input type="submit" value="Search" />
+      <input class="rounded-r-md" type="submit" value="Search" />
     </form>
 
     <div class="movie-list">
@@ -39,7 +40,7 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { searchTMDB, fetchTrendingMovies } from "../lib/tmdb";
+import { searchTMDB, fetchMovies } from "../lib/tmdb";
 
 import Card from "../components/Card";
 
@@ -51,8 +52,8 @@ export default {
 
     const router = useRouter();
 
-    const getTrendingMovies = async () => {
-      const res = await fetchTrendingMovies();
+    const getMovies = async () => {
+      const res = await fetchMovies("popular");
       movies.value = res.results;
     };
 
@@ -72,13 +73,13 @@ export default {
     return {
       search,
       movies,
-      getTrendingMovies,
+      getMovies,
       searchMovies,
       toggleModal,
     };
   },
   mounted() {
-    this.getTrendingMovies();
+    this.getMovies();
   },
 };
 </script>
@@ -91,7 +92,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem 2rem;
+    margin: 1rem;
 
     input {
       display: block;
@@ -105,7 +106,6 @@ export default {
         color: white;
         background-color: #496583;
         padding: 0.8rem 1rem;
-        border-radius: 0.5rem 0 0 0.5rem;
         transition: 0.4s;
 
         &::placeholder {
@@ -122,7 +122,6 @@ export default {
         max-width: 300px;
         background-color: #42b883;
         padding: 0.8rem 1rem;
-        border-radius: 0 0.5rem 0.5rem 0;
         color: white;
         text-transform: uppercase;
         letter-spacing: 0.1rem;
@@ -136,8 +135,9 @@ export default {
   }
 
   .movie-list {
+    margin: 1rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 320px));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1rem;
     justify-content: center;
   }
