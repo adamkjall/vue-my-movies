@@ -8,14 +8,14 @@
         :alt="alt"
         :onload="loading = false"
         oncomplete="alert('com')"
-        onerror="this.onerror=null;this.src='./img/default-poster.webp';"
+        onerror="this.onerror=null;this.src='/img/default-poster.webp';"
       />
       <div
-        class="absolute bottom-0 right-0 bg-green-500 capitalize text-white p-2"
+        v-if="mediaType" class="absolute bottom-0 right-0 bg-green-500 capitalize text-white p-2"
       >
         {{ mediaType }}
       </div>
-      <div class="absolute bottom-0 left-0 bg-green-500 text-white p-2">
+      <div v-if="releaseYear" class="absolute bottom-0 left-0 bg-green-500 text-white p-2">
         {{ releaseYear }}
       </div>
     </div>

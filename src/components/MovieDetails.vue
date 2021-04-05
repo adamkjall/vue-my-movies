@@ -3,13 +3,27 @@
     class="movie-details"
     :style="{ backgroundImage: `url(${movie.backdrop_path})` }"
   >
-    <!-- <div class="overlay"></div> -->
+    <div class="overlay"></div>
     <div class="close-btn" @click="close">CLOSE</div>
     <div class="details-wrapper">
       <div class="content">
-        <h1>{{ movie.title }}</h1>
-        <div>{{ genres }}</div>
-        <img :src="movie.backdrop_path" alt="" />
+        <h1 class="title">{{ movie.title }}</h1>
+        <div class="release-date">Release date:{{ movie.release_date }}</div>
+        <div class="runtime">Runtime: {{ getRuntime(movie.runtime) }}</div>
+        <div class="genres">Genres: {{ genres }}</div>
+        <div class="tagline" v-if="movie.tagline">
+          Tagline: {{ movie.tagline }}
+        </div>
+        <a
+          class="imdb-link"
+          v-if="movie.imdb_id"
+          :href="`https://www.imdb.com/title/${movie.imdb_id}`"
+          target="_blank"
+        >
+          <img src="/img/imdb-logo.svg" alt="imdb logo" />
+        </a>
+        <img class="poster" :src="movie.poster_path" alt="" />
+        <p>Overview: {{ movie.overview }}</p>
       </div>
     </div>
   </div>
@@ -27,18 +41,27 @@ export default {
     const route = useRoute();
     const router = useRouter();
 
-    const genres = computed(() => movie.value.genres?.map(genre => genre.name).join(", "))
+    const genres = computed(() =>
+      movie.value.genres?.map((genre) => genre.name).join(", ")
+    );
 
     const getMovie = async () => {
       movie.value = await fetchMovieById(route.params.id);
       console.log(movie.value);
     };
 
+    const getRuntime = (runtime) => {
+      if (!runtime) return "";
+      const hours = Math.floor(runtime / 60);
+      const minutes = runtime % 60;
+      return (hours ? hours + "h " : "") + (minutes ? minutes + "m" : "");
+    };
+
     const close = () => {
       router.push("/");
     };
 
-    return { movie, getMovie, close, genres };
+    return { movie, getMovie, close, genres, getRuntime };
   },
   mounted() {
     this.getMovie();
@@ -63,10 +86,9 @@ export default {
   color: white;
 
   .overlay {
-    position: fixed;
     width: 100%;
     height: 100%;
-    background-color: rgba($color: #000000, $alpha: 0.6);
+    background-color: rgba(0, 0, 0, 0.6);
   }
 
   .close-btn {
@@ -76,9 +98,30 @@ export default {
   }
 
   .details-wrapper {
-    overflow: auto;
+    position: absolute;
+    top: 0;
     height: 100%;
-    padding: 5rem 1.5rem 0 6.5rem;
+    overflow: auto;
+    padding: 5rem 1.5rem 5rem 6.5rem;
+
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+
+      .poster {
+        width: 20rem;
+      }
+
+      .imdb-link {
+        width: 3.5rem;
+        display: block;
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
   }
 }
 </style>
